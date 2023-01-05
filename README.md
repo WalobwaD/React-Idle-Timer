@@ -1,4 +1,21 @@
-<h1 align="center>How to make an idle timer for your REACT app.</h1>
-<p>An idle timer is a feature implemented in most web applications for user activity detection. 
-  In simple terms, it is used to check whether a user has been inactive for a specified amount of time. 
+<h1 align="center">How to make an idle timer for your REACT app.</h1>
+<em><b>Jump ahead:</b></em>
+<br></br>
+
+> <b>Idle Timeout</b>
+- <a href="#1">What is an idle Timeout?</a>
+- <a href="#2">Why do we need an idle timeout?</a>
+
+> <b>Idle Detection</b>
+
+- <a href="#3">Detecting whether a user is idle.</a>
+
+<h3 id="1">Definition</h3>
+<p>An idle timout is a feature implemented in most web applications for user activity detection. 
+  In simple terms, it is used to check whether a user has been inactive(away from the app or computer) for a specified amount of time. 
   Often, an action gets executed after the time of inactivity set is exceeded.</p>
+<h3 id="2">Why we need an idle Timeout.</h3>
+<p>An idle timout can be used for various purposes like logging a user out of the site if the user is inactive, this is crucial for high risk web apps to enhance security of the application. Logging out a user is also important to improve perfomance of the application by avoiding unnecesarry API calls on the site since the user is inactive. Setting an idle timeout is also a great user experience practice because many at times a user might forget the reason for accessing the site, logging the user can help in refreshing the user's memory. Many times instead of directly logging a user out of your application you may want to prompt the user on the next action to be taken, whether to log out of continue useing the site.</p>
+<p>An example use case is when you're watching a long series on Netflix, Netflix might ask you if you are still there and you are given an option of cancelling or continuing the series. In this article we're going to learn how to implement an idle timeout in your React applications by checking </p>
+
+<h3 id="3">How to detect if a user is idle in your application</h3>
