@@ -38,7 +38,7 @@
   The events are explained line by line above them
   */
 function setup() {
-    //mousemove, when a user moves/hovers the mouse around the window
+    //mousemove, fired at an element when a pointing device (usually a mouse) is moved while the cursor's hotspot is inside it.
     this.addEventListener("mousemove", resetTimer, false);
     
     //mousedown, when a user directs the mouser's pointer downwards
@@ -47,10 +47,11 @@ function setup() {
     //keypress, when a user presses on any key 
     this.addEventListener("keypress", resetTimer, false);
     
-    this.addEventListener("DOMMouseScroll", resetTimer, false);
-    this.addEventListener("mousewheel", resetTimer, false);
+    //wheel, event fires when the user rotates a wheel button on a pointing device (typically a mouse).
+    this.addEventListener("wheel", resetTimer, false);
+    
+    //touchmove, fired when one or more touch points are moved along the touch surface.
     this.addEventListener("touchmove", resetTimer, false);
-    this.addEventListener("MSPointerMove", resetTimer, false);
     
     startTimer();
 }
@@ -63,17 +64,64 @@ function startTimer() {
 }
  
 function resetTimer(e) {
+    //the reset timer function clears the timer and initializes the goActive function
     window.clearTimeout(timeout);
  
     goActive();
 }
  
 function goInactive() {
+    //This function is to be executed when a user is inactive, Open the window's console and see the printed statement
     console.log("The user is inactive")
 }
  
 function goActive() {
+    //This function is to be executed when a user is active, Open the window's console and see the printed statement. 
+    //Initializes the timer to start counting
     console.log("The user is active")
     startTimer();
 }
+```
+
+> Using react-idle-timer package
+<p>Using the above method in your React app is not ideal, in replacement of all the hardcoded lines of codes, we can utilize the <a href="https://www.npmjs.com/package/react-idle-timer"><code>react-idle-timer</code></a> package, it only requires a few lines of code and we'll be good to go.</p>
+<p></p>
+
+```jsx
+  //Install the package in your React app(use npm or yarn)
+  $npm install react-idle-timer
+              or 
+  $yarn add react-idle-timer
+  
+  
+  
+  import React, {useRef} from "react"
+  //Import the package to your root file
+  import IdleTimer from "react-idle-timer"
+  
+  const IdleTimerComponent = ()=> {
+    const IdleTimerRef = useRef(null)
+    const onIdle = ()=> {
+      console.log("The user is inactive")
+    }
+    return (
+      <div>
+        <IdleTimer>
+          ref={IdleTimerRef} 
+          timeout={2 * 1000} 
+          onIdle={onIdle}>
+        </IdleTimer>
+      </div>
+    )
+  }
+  
+  //use the idleTimerComponent in your App component
+  const App = ()=> {
+    return (
+      <div>
+        <IdleTimerComponent></IdleTimerComponent>
+      </div>
+    )
+  }
+  
 ```
