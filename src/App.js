@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useIdle  from "./useIdle";
+import useIdle  from "./hooks/useIdle";
 import Modal from "react-modal"
 Modal.setAppElement("#root")
 
