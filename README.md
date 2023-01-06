@@ -19,68 +19,70 @@
 <p>An example use case is when you're watching a long series on Netflix, Netflix might ask you if you are still there and you are given an option of cancelling or continuing the series. In this article we're going to learn how to implement an idle timeout in your React applications by checking </p>
 
 <h3 id="3">How to detect if a user is idle in your application</h3>
-<p>You can easily have activity detection in your application by installing the <a>react-idle-timer</a> package, but it is important to know some of the functionality the package uses under the hood to make it happen. Since react is a javascript library, we will write a simple functionality to detect the users activity on the web application that indicated whether the user is active or not. </p>
+<p>You can easily have activity detection in your application by installing the <a>react-idle-timer</a> package, but it is important to know some of the functionality the package uses under the hood to make it happen. We will first write the functionality using state that detects the user inactivy using some inbuilt DOM events. </p>
 
-> Using vanilla javascript
+> Using state
 
 <p>We can execute a script that console logs "The user is inactive" if a user does not perform any of the eventListeners on the application's window and console logs "The user is active" if thay the execute any of the eventListeners.</p>
 
 **Read through the comments between the code to understand what each function does before we proceed.**
 
 ```jsx
-  //variable that's supposed to store the time needed for the timeout functionality, initially set to undefined.
-  let timeout;
- 
- 
-  /**
-  The setup function here is used to initialize the event listeners to be listened to inorder to determine whether a user is inactive or not
-  The eventListeners execute the resetTimer functions that resets the timout set to zero every time an event is listened to
-  The events are explained line by line above them
-  */
-function setup() {
-    //mousemove, fired at an element when a pointing device (usually a mouse) is moved while the cursor's hotspot is inside it.
-    this.addEventListener("mousemove", resetTimer, false);
+  import React, {useEffect, useState} from "react"
+  
+  const App = ()=> {
+    const [active, setActivity] = useState(true)
     
-    //mousedown, when a user directs the mouser's pointer downwards
-    this.addEventListener("mousedown", resetTimer, false);
+    const checkForInactivity = ()=> {
     
-    //keypress, when a user presses on any key 
-    this.addEventListener("keypress", resetTimer, false);
+      const expireTime = localStorage.getItem("expireTime")
+      
+      if (expireTime < Date.now()) {
+        console.log("User is inactive")
+        setActivity(false)
+      }
+    }
     
-    //wheel, event fires when the user rotates a wheel button on a pointing device (typically a mouse).
-    this.addEventListener("wheel", resetTimer, false);
+    const updateExpireTime = ()=> {
+      
+      const expireTime = Date.now() + 5000
+      
+      localStorage.setItem("expireTime", expireTime)
+    }
     
-    //touchmove, fired when one or more touch points are moved along the touch surface.
-    this.addEventListener("touchmove", resetTimer, false);
+    useEffect( ()=> {
     
-    startTimer();
-}
-//initalizes the setup function to be executed
-setup();
- 
-function startTimer() {
-    // wait 2 seconds before calling goInactive
-    timeoutID = window.setTimeout(goInactive, 2000);
-}
- 
-function resetTimer(e) {
-    //the reset timer function clears the timer and initializes the goActive function
-    window.clearTimeout(timeout);
- 
-    goActive();
-}
- 
-function goInactive() {
-    //This function is to be executed when a user is inactive, Open the window's console and see the printed statement
-    console.log("The user is inactive")
-}
- 
-function goActive() {
-    //This function is to be executed when a user is active, Open the window's console and see the printed statement. 
-    //Initializes the timer to start counting
-    console.log("The user is active")
-    startTimer();
-}
+      const interval = setInterval( ()=> {
+        checkForInactivity()
+      }, 2000)
+      
+      return ()=> {
+        clearInterval(interval)
+      }
+    }, [])
+    
+    useEffect( ()=> {
+    
+      updateExpireTime()
+      
+      window.addEventListener("click", updateExpireTime)
+      window.addEventListener("keypress", updateExpireTime)
+      window.addEventListener("scroll", updateExpireTime)
+      window.addEventListener("mousemove", updateExpireTime)
+      
+      return ()=> {
+        window.removeEventListener("click", updateExpireTime)
+        window.removeEventListener("keypress", updateExpireTime)
+        window.removeEventListener("scroll", updateExpireTime)
+        window.removeEventListener("mousemove", updateExpireTime)        
+      }
+
+    }, [])
+    
+    return (
+      <div>Active : {active.toString()}</div>
+    )
+  }
 ```
 
 > Using react-idle-timer package
