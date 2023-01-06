@@ -125,3 +125,5 @@ function goActive() {
   }
   
 ```
+
+<p>And that's it, you have an idle timout feature that tells you when a user is inactive on your React web application. The <code>IdleTimer</code> API takes in several props, you can check them out from the package's <a href="https://idletimer.dev/docs/features/idle-detection">documentation</a></p>
