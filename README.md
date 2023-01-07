@@ -62,6 +62,7 @@
 
 
 ```jsx
+  //App.js
   //import the required useEffect and useState from React
   import React, {useEffect, useState} from "react"
   
@@ -162,6 +163,7 @@ $npm install react-idle-timer
 ```
 
 ```jsx
+//hooks/useIdle.js
   //imports React's useState() 
   import {useState} from "react"
   //imports useIdleTimer() hook from react-idle-timer
@@ -215,6 +217,7 @@ $npm install react-idle-timer
 <p>After creating our custom hook and exporting it we need to import it to the file we need it in this case the app.js file.</p>
 
 ```jsx
+//App.js
   import useIdle  from "./useIdle";
 
 
@@ -234,10 +237,15 @@ $npm install react-idle-timer
 ```
 <h5>Code explanation</h5>
 
+- In the code snippet above we imported our <code>useIdle()</code> custom hook to our App.js file, then created a component named App which will be exported by default to our index.js file for rendering.
+- Inside the App component a function called logout is created which will simply console log "User is logged out" when called.
+- Using the useIdle custom hook, isIdle is destructed from it which holds the boolean value of whether the user is active. The useIdle hook takes in two parameters onIdle and idleTime, the onIdle parameter will take in the logout function created above as it's value which will be the action to be executed when the user is inactive and also an idleTime prop which is used to set the time, in this case we've set it to 5 seconds.
+- Inside the return of our App component, we used a ternary operator to check whether the isIdle property is true, the isIdle property will be changed after 5 seconds of user inactivity and if idle it will render a text on the page saying You were logged out and also a text on the console saying User is logged out. If the isIdle value is true a You are active text is rendered.
+
 
 > Handle user activity
 
-**Step 3:** <b id="8">Use a modal to prompt the user whether to logout or continue with the site.</b>
+**Step 3(optional):** <b id="8">Use a modal to prompt the user whether to logout or continue with the site.</b>
 <p>Let us add some functionality to our idle timeout feature by using a modal to determine the next step, the modal will only pop up if the timeout specified reaches which will contain a prompt that asks the user whether to logout or not. This is a good practice in order to avoid logging the user out unnecessarilly out of our application. We will now have to install the <a href="https://www.npmjs.com/package/react-modal#api-docume"><code>react-modal</code></a> package for this functionality.</p>
 
 ```
@@ -245,22 +253,27 @@ $npm install react-modal
 ```
 
 ```jsx
+//App.js
 import { useState } from "react";
 import useIdle  from "./useIdle";
+//imports modal from react-modal
 import Modal from "react-modal"
 Modal.setAppElement("#root")
 
 const App = ()=> {
 
+  //function that opens the modal by setting the value of openModal to true
   const modalOpen= ()=> {
     setModal(true)
     console.log("User is logged out")
   }
 
-
+  //state to store a boolean value that determines the state of the modal
   const [openModal, setModal] = useState()
+
   const {isIdle, setIdle} = useIdle({onIdle:modalOpen, idleTime:5})
 
+  //function that closes the modals and resets the time by reseting the idle variable to false
   const stay = ()=> {
     setModal(false)
     setIdle(!isIdle)
@@ -272,6 +285,8 @@ const App = ()=> {
   return (
     <div>
       {isIdle? <p>You were logged out</p> : <p>You are active rn</p>}
+
+      {/*modal created to pop up when the user is idle*/}
       <Modal
         style={{
           content: {
@@ -301,5 +316,16 @@ const App = ()=> {
 export default App;
 
 ```
+<h5>Code explanation.</h5>
 
+- We imported a <code>Modal</code> instance from the react-modal package for use.
+- We then created a <code>modalOpen</code> function which will set the value of openModal to true and console logs "Modal is Open" when called.
+- Created a variable called <code>openModal</code> and a function setIdle which will trigger the state of the openModal variable when called.
+- The stay function will be used to close the modal when called, we will use it in a button inside the modal created and sets the state of the isIdle variable to false
+- Inside the return of our App component we added the Modal component which is styled with inline CSS, it contains buttons that will help the user to select whether to log in or log out of the site. When the logout button is clicked the logout function is executed which sets the state of the openModal variable to false and the text display changes to You were logged out.
 
+<img src="./modal.png" alt="modal image">
+<p>With that you have created an idleTimeout and added a functionality of popping a modal that prompts the user whether to login or logout.</p>
+
+<h3>Conclusion</h3>
+<p>In conclusion, a react idle timeout is a useful feature that can be implemented in a react application to automatically log out a user after a certain period of inactivity. This helps to protect the security of the application by ensuring that the user's session is terminated if they leave their device unattended for an extended period of time. It is important to carefully consider the length of the idle timeout and provide appropriate notifications to the user to avoid disrupting their workflow. Implementing an idle timeout can also help to reduce the risk of unauthorized access to the application. In this article we learnt how to detect whether a user is inactive from scratch and utilized the react-idle-timer library to logout a user from a site if idle, we also learnt how to implement the react-modal package which is great if you find creating a modal from scratch is a task.</p>
