@@ -144,7 +144,10 @@
 - The first <code><useEffect()</code> has variable called interval which sets the interval of checking the expired time after every 1 seconds using the <code>setInterval()</code> method. The setInterval takes in checkForInactivity as it's first argument and the desired time as the second argument(checks after every 1 seconds). It returns a function that clears the interval from the window and stops the interval.
 - The second <code>useEffect()</code> hook is where we have the desired eventListeners and takes <code>updateExpireTime()</code> as the function which simply updates the expireTime to refresh if the user is active. It runs only once when the component mounts because we declared an empty dependancy array as it's seconf argument. Some of the events used are **click, scroll, mousemove, keypress**, you may add your desired events to detect user inactivity. It alse cleans up the window by returning a function that removes the eventListeners from the window.
 
-<video src="./10-25-59.mp4"></video>
+<video width="320" height="240" controls>
+  <source src="./10-25-59.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 > <p id="5">Using react-idle-timer package</p>
 
