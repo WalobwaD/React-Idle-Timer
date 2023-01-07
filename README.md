@@ -80,7 +80,7 @@
       
       //sets the activity state to false if the expireTime is earlier than the current time
       if (expireTime < Date.now()) {
-        console.log("User is inactive")
+        console.log("The user is inactive")
         setActivity(false)
       }
     }
@@ -137,6 +137,8 @@
   }
 ```
 <h5>Code explanation</h5>
+
+- The <code>checkForInactivity()</code> function gets a key called expireTime inside the browser's localStorage, the local storage stores data with no expiration date, <a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp"> read more</a> about local storage. After getting the data is compares the expireTime with the current time of which if the expireTime was earlier than the date it console logs "The user is inactive"
 
 > <p id="5">Using react-idle-timer package</p>
 
