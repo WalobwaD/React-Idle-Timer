@@ -43,6 +43,8 @@
 
 <p>An idle timout can be used for various purposes like logging a user out of the site if the user is inactive, this is crucial for high risk web apps to enhance security of the application. Logging out a user is also important to improve perfomance of the application by avoiding unnecesarry API calls on the site since the user is inactive. Setting an idle timeout is also a great user experience practice because many at times a user might forget the reason for accessing the site, logging the user out can help in refreshing the user's memory. Many times instead of directly logging a user out of your application you may want to prompt the user on the next action to be taken, whether to log out or continue using the site.</p>
 
+<img src="./Timeoutill.webp" alt="illustration"/>
+
 <p>An example use case is when you're watching a long series on Netflix, Netflix might ask you if you are still there and you are given an option of cancelling or continuing the series. In this article we're going to learn how to implement an idle timeout in your React applications by checking if the user is idle or not and asking them whether they want to stay logged in or logout of the site.</p>
 
 <h3 id="3">How to detect if a user is idle in your application</h3>
