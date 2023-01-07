@@ -56,52 +56,71 @@
 
 > <p id="4">Using state</p>
 
-<p>Assuming you have already initialized a react app using <code>create-react-app</code>. Inside the <code>App.jsx</code> file, we can write a script that console logs "The user is inactive" if a user does not perform any of the eventListeners on the application's window and console logs "The user is active" if they the execute any of the eventListeners.</p>
+<p>Assuming you have already initialized a react app using <code>create-react-app</code>. You should have a folder structure similar to this without the hooks folder.</p>
+<img src="./Folder.png" alt="Folder"/>
+ <p>Inside the <code>App.js</code> file, we can write a script that console logs "The user is inactive" if a user does not perform any of the eventListeners on the application's window and console logs "The user is active" if they the execute any of the eventListeners. The codes are explained by comments on every line and additional explanation given below.</p>
 
 
 ```jsx
+  //import the required useEffect and useState from React
   import React, {useEffect, useState} from "react"
   
+  //Our App component which will be exported as default to our index.js file for rendering.
   const App = ()=> {
+
+    //creating a variable (active) to store our boolean and a function (setActivity) to change our variable's value to either true or false 
     const [active, setActivity] = useState(true)
+
+
     
     const checkForInactivity = ()=> {
     
+      //Grabs the expired time from the local storage in our browser, store it in a variable called expireTime
       const expireTime = localStorage.getItem("expireTime")
       
+      //sets the activity state to false if the expireTime is earlier than the current time
       if (expireTime < Date.now()) {
         console.log("User is inactive")
         setActivity(false)
       }
     }
     
+
     const updateExpireTime = ()=> {
       
+      //sets the expire timer to 5 seconds after the current date(time to wait to log out the user after detecting inactiviy), you can modify the values
       const expireTime = Date.now() + 5000
       
+      //sets the value of the localStorage's expire time
       localStorage.setItem("expireTime", expireTime)
     }
     
+    //runs only once when the component is mount
     useEffect( ()=> {
     
+      //checks the expire time after every 2 seconds(you can modify the values)
       const interval = setInterval( ()=> {
         checkForInactivity()
       }, 2000)
       
+      //clears the interval set
       return ()=> {
         clearInterval(interval)
       }
     }, [])
     
+    //runs only once when the component is mount
     useEffect( ()=> {
-    
+      //updates the expire time
       updateExpireTime()
       
+      //event listensers to detect user activity, click, keypress, scroll, mousemove
       window.addEventListener("click", updateExpireTime)
       window.addEventListener("keypress", updateExpireTime)
       window.addEventListener("scroll", updateExpireTime)
       window.addEventListener("mousemove", updateExpireTime)
       
+      //cleansup the event listeners
       return ()=> {
         window.removeEventListener("click", updateExpireTime)
         window.removeEventListener("keypress", updateExpireTime)
@@ -112,10 +131,12 @@
     }, [])
     
     return (
+      //stringifies the value of the active variable to display on the browser
       <div>Active : {active.toString()}</div>
     )
   }
 ```
+<h5>Code explanation</h5>
 
 > <p id="5">Using react-idle-timer package</p>
 
