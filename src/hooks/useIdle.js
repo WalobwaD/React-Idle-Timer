@@ -7,20 +7,20 @@ function useIdle({onIdle, idleTime=1}){
 
     const handleIdle = ()=> {
         console.log("User is idle")
+        console.log("Last Active", getLastActiveTime())
         setIdle(true)
         onIdle()
     }
 
-    const {getRemainingTime, getLastActiveTime} = useIdleTimer({
-        timeout: 1000 * 60 ,
+    const {getLastActiveTime} = useIdleTimer({
+        timeout: 1000 * idleTime ,
         onIdle: handleIdle,
         debounce: 500
     })
 
     return {
-        getRemainingTime,
-        getLastActiveTime,
-        isIdle
+        isIdle,
+        setIdle
     }
 
 

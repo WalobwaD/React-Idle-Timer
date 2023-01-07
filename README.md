@@ -162,36 +162,54 @@ $npm install react-idle-timer
 ```
 
 ```jsx
+  //imports React's useState() 
   import {useState} from "react"
+  //imports useIdleTimer() hook from react-idle-timer
   import { useIdleTimer } from "react-idle-timer"
 
+  //custom hook called useIdle() which will take in onIdle and the idleTime as it's parameters
   function useIdle({onIdle, idleTime=1}){
 
+      //creates a variable isIdle and a function setIdle
       const [ isIdle, setIdle ] = useState()
 
+      //function to set the state of isIdle to true and executes the command passed on to onIdle
       const handleIdle = ()=> {
           console.log("User is idle")
           setIdle(true)
+          console.log("Last Active", getLastActiveTime())
           onIdle()
       }
 
-      const {getRemainingTime, getLastActiveTime} = useIdleTimer({
-          timeout: 1000 * 60 ,
+      /**detructuring getLastActiveTime from useIdleTImer
+       * sets the timeout to be in seconds and passes the handleIdle function to onIdle
+       * returns the parameters getRemainingTime, getLastActiveTime and isIdle to be used
+       * */
+      const {getLastActiveTime} = useIdleTimer({
+          timeout: 1000 * idleTime ,
           onIdle: handleIdle,
           debounce: 500
       })
 
       return {
-          getRemainingTime,
-          getLastActiveTime,
-          isIdle
+          isIdle,
+          setIdle
       }
 
 
   }
 
+  //exports our useIdle custom hook
   export default useIdle;
 ```
+
+<h5>Code explanation</h5>
+
+- Inside the hooks folder you need a file starting with the prefix (use) to indicate that it is a custom hook. Then go ahead an create a function called <code>useIdle()</code> which will be our custom hook. The hook extracts onIdle which will take in a function as the value and idleTime which will be used to set the timeout time and is default to 1 seconnd, you can modify the values from the useIdleTimer hook which has other several props.
+- Inside our custom hook we used the <code>useState()</code> hook which will store our isIdle variable and setIdle function to show whether the user is idle.
+- We also created a <code>handleIdle()</code> function that is supposed to take an action after the <code>isIdle</code> variable is set to true, in this case it calls the <code>onIdle()</code> function to be executed and console logs the last time the user was active using the getLastActiveTime() method destructured from the useIdleTimer hook
+- The useIdleTimer is modified by setting the time to be specified in seconds and sets the onIdle method value to execute the handleIdle function created above.
+- It finally returns the props that can be destructured in our App.js and used that is the isIdle and setIdle declared from the useState hook. Finally our hook gets exported to be used.
 
 **Step 2:** <b id="7">Importing out custom hook to our <code>App.js</code> file and using it.</b>
 <p>After creating our custom hook and exporting it we need to import it to the file we need it in this case the app.js file.</p>
@@ -204,16 +222,18 @@ $npm install react-idle-timer
     const logout = ()=> {
       console.log("User is logged out")
     }
-    const {isIdle} = useIdle({onIdle:logout, idleTime:0.25})
+    const {isIdle} = useIdle({onIdle:logout, idleTime:5})
     return (
       <div>
-        {isIdle? <p>You were logged out</p> : <p>You are active rn</p>}
+        {isIdle? <p>You were logged out</p> : <p>You are active</p>}
       </div>
     )
   }
 
   export default App;
 ```
+<h5>Code explanation</h5>
+
 
 > Handle user activity
 
