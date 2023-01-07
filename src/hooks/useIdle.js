@@ -12,7 +12,7 @@ function useIdle({onIdle, idleTime=1}){
     }
 
     const {getRemainingTime, getLastActiveTime} = useIdleTimer({
-        timeout: 1000 * idleTime,
+        timeout: 1000 * 60 ,
         onIdle: handleIdle,
         debounce: 500
     })
@@ -20,8 +20,7 @@ function useIdle({onIdle, idleTime=1}){
     return {
         getRemainingTime,
         getLastActiveTime,
-        isIdle,
-        setIdle
+        isIdle
     }
 
 

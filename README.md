@@ -34,7 +34,7 @@
 
 <h3 id="1">Definition</h3>
 
-<p>An idle timout is a feature implemented in most web applications for user activity detection. 
+<p>An idle timeout is a feature implemented in most web applications for user activity detection. 
   In simple terms, it is used to check whether a user has been inactive(away from the app or computer) for a specified amount of time. 
   Often, an action gets executed after the time of inactivity set is exceeded.
 </p>
@@ -54,11 +54,11 @@
 <p>We first need to detect whether a user is active or not. You can easily have activity detection in your application by installing the <a>react-idle-timer</a> package, but it is important to know some of the functionality the package uses under the hood to make it happen. We will first write the functionality using state that detects the user's active state using some DOM events.
 </p>
 
-> <p id="4">Using state</p>
+> <p id="4">Using React's useState and useEffect hooks</p>
 
-<p>Assuming you have already initialized a react app using <code>create-react-app</code>. You should have a folder structure similar to this without the hooks folder.</p>
-<img src="./Folder.png" alt="Folder"/>
- <p>Inside the <code>App.js</code> file, we can write a script that console logs "The user is inactive" if a user does not perform any of the eventListeners on the application's window and console logs "The user is active" if they the execute any of the eventListeners. The codes are explained by comments on every line and additional explanation given below.</p>
+<p>Assuming you have already initialized a react app using <code>create-react-app</code>. You should have a folder structure similar to this.</p>
+<img src="./Folders.png" alt="Folder"/>
+ <p>Inside the <code>App.js</code> file, we can write a script that console logs "The user is inactive" if a user does not perform any of the eventListeners on the application's window and display's a simple text on the UI that check's the state of active whether true or false</p>
 
 
 ```jsx
@@ -138,15 +138,15 @@
 ```
 <h5>Code explanation</h5>
 
-- The <code>useState()</code> hook creates a variable called active with an initial value of true and a function called setActive which will toggle the active variable to either true or false if the user is active.
-- The <code>checkForInactivity()</code> function gets a key called expireTime inside the browser's which we will create in our <code>updateExpireTime()</code> function, the local storage stores data with no expiration date, <a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp"> read more</a> about local storage. After getting the data is compares the expireTime with the current time of which if the expireTime was earlier than the date it console logs "The user is inactive"
+- The <code>useState()</code> hook creates a variable called active with an initial value of true and a function called setActive which will toggle the active variable to false when the user does not perform any of the eventListeners created after 5 seconds.
+- The <code>checkForInactivity()</code> function gets a key called expireTime from the localStorage of our browser which we will create in our <code>updateExpireTime()</code> function, the local storage stores data with no expiration date, you can<a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp"> read more</a> about local storage. After getting the data, it compares the expireTime with your current time of which if the expireTime was earlier than the date it console logs "The user is inactive"
 - The <code>updateExpireTime()</code> function creates a new Item called expireTime inside our local storage which is set to your current time added to 5 seconds (you can adjust the time to your desired time), the expireTime is what the script uses to determine the time taken to logout the user if idle.
-- The first <code><useEffect()</code> has variable called interval which sets the interval of checking the expired time after every 1 seconds using the <code>setInterval()</code> method. The setInterval takes in checkForInactivity as it's first argument and the desired time as the second argument(checks after every 1 seconds). It returns a function that clears the interval from the window and stops the interval.
+- The first <code>useEffect()</code> has variable called interval which sets the interval of checking the expired time after every 1 seconds using the <code>setInterval()</code> method. The setInterval takes in <code>checkForInactivity()</code> as it's first argument and the desired time as the second argument(checks after every 1 seconds). It returns a function that clears the interval from the window and stops the interval.
 - The second <code>useEffect()</code> hook is where we have the desired eventListeners and takes <code>updateExpireTime()</code> as the function which simply updates the expireTime to refresh if the user is active. It runs only once when the component mounts because we declared an empty dependancy array as it's seconf argument. Some of the events used are **click, scroll, mousemove, keypress**, you may add your desired events to detect user inactivity. It alse cleans up the window by returning a function that removes the eventListeners from the window.
 
-<video width="320" height="240" controls>
-  <source src="./10-25-59.mp4" type="video/mp4">
-Your browser does not support the video tag.
+<video width="350" height=""250>
+  <source src="./statevid.mp4" type="video/mp4">
+
 </video>
 
 > <p id="5">Using react-idle-timer package</p>
