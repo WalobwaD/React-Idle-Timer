@@ -101,7 +101,7 @@
       //checks the expire time after every 2 seconds(you can modify the values)
       const interval = setInterval( ()=> {
         checkForInactivity()
-      }, 2000)
+      }, 1000)
       
       //clears the interval set
       return ()=> {
@@ -138,7 +138,11 @@
 ```
 <h5>Code explanation</h5>
 
-- The <code>checkForInactivity()</code> function gets a key called expireTime inside the browser's localStorage, the local storage stores data with no expiration date, <a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp"> read more</a> about local storage. After getting the data is compares the expireTime with the current time of which if the expireTime was earlier than the date it console logs "The user is inactive"
+- The <code>useState()</code> hook creates a variable called active with an initial value of true and a function called setActive which will toggle the active variable to either true or false if the user is active.
+- The <code>checkForInactivity()</code> function gets a key called expireTime inside the browser's which we will create in our <code>updateExpireTime()</code> function, the local storage stores data with no expiration date, <a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp"> read more</a> about local storage. After getting the data is compares the expireTime with the current time of which if the expireTime was earlier than the date it console logs "The user is inactive"
+- The <code>updateExpireTime()</code> function creates a new Item called expireTime inside our local storage which is set to your current time added to 5 seconds (you can adjust the time to your desired time), the expireTime is what the script uses to determine the time taken to logout the user if idle.
+- The first <code><useEffect()/code> has variable called interval which sets the interval of checking the expired time after every 1 seconds using the <code>setInterval()</code> method. The setInterval takes in checkForInactivity as it's first argument and the desired time as the second argument(checks after every 1 seconds). It returns a function that clears the interval from the window and stops the interval.
+- The second <code>useEffect()</code> hook is where we have the desired eventListeners and takes <code>updateExpireTime()</code> as the function which simply updates the expireTime to refresh if the user is active. It runs only once when the component mounts because we declared an empty dependancy array as it's seconf argument. Some of the events used are **click, scroll, mousemove, keypress**, you may add your desired events to detect user inactivity. It alse cleans up the window by returning a function that removes the eventListeners from the window.
 
 > <p id="5">Using react-idle-timer package</p>
 
